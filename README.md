@@ -9,6 +9,6 @@ Data and tooling for four scheduled Indian-market research tasks that email Utsa
 | `.github/workflows/nse-daily.yml` | Weekdays 18:45 and 19:15 IST. |
 | `data/universe.csv` | Nifty Midcap 150 and Smallcap 250 constituents (Sep 2026 rebalance) with Groww page slugs. Refresh after each March and September rebalance. |
 | `guide/email.html` | Email design system the tasks build from. |
-| `prompts/` | The live prompts for the four scheduled tasks, kept in sync with the tasks. |
+| `prompts/A.txt` … `D.txt` | The live prompts: A pre-market check (weekdays 8:10), B evening swing scan (weekdays 19:40), C daily news, results and ideas (weekdays 7:20), D weekly review (Saturday 9:45). Built from the shared blocks in `prompts/src` (rules, source ladder, documents, growth quality and PEG, email). Keep them in sync with the scheduled tasks. |
 
 Research only. Nothing here places orders.
