@@ -92,7 +92,7 @@ EMAIL
 DELIVERY
 Send with the Gmail send tool to utsavbalar1231@gmail.com and no other address, with both htmlBody and body. If sending fails, save a Gmail draft with the same content. If that also fails, put the full plain-text email in your final message.
 Subject: [Stock Picks] Evening scan, DD Mon YYYY
-Layout: header (headline; status strip: MIDCAP regime, SMALLCAP regime, DATA = GROWW LIVE or EOD2 + WEB); KPI rows (India VIX, FII cash, DII cash, net new highs); 01 MARKET (the charts.html blocks, then 2 to 4 lines of reading); 02 MIDCAP CALLS (call blocks; if none, one line with the reason); 03 SMALLCAP CALLS; 04 OPEN CALLS (action list); 05 WATCHLIST (table: symbol, trigger condition, why); 06 RESULTS, CONCALLS AND FILINGS (one item per finalist or ledger name with something new); DATA GAPS; SOURCES; LEDGER; footer. About 900 words of prose.
+Layout: header (headline; status strip: MIDCAP regime, SMALLCAP regime, DATA = main price source: NSE FILES, GROWW or WEB); KPI rows (India VIX, FII cash, DII cash, net new highs); 01 MARKET (the charts.html blocks, then 2 to 4 lines of reading); 02 MIDCAP CALLS (call blocks; if none, one line with the reason); 03 SMALLCAP CALLS; 04 OPEN CALLS (action list); 05 WATCHLIST (table: symbol, trigger condition, why); 06 RESULTS, CONCALLS AND FILINGS (one item per finalist or ledger name with something new); DATA GAPS; SOURCES; LEDGER; footer. About 900 words of prose.
 Machine blocks for the plain-text body:
 LEDGER
 SYMBOL | bucket | date called | entry | stop | T1 | T2 | size % | status (pending / open / half booked / closed: reason, R)
