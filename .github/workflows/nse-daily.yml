@@ -1,0 +1,35 @@
+name: NSE daily files
+
+on:
+  schedule:
+    - cron: "15 13 * * 1-5"   # 18:45 IST, after NSE publishes the day's reports
+    - cron: "45 13 * * 1-5"   # 19:15 IST retry if the first run was early
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ["scripts/fetch_nse.py", ".github/workflows/nse-daily.yml"]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: nse-daily
+  cancel-in-progress: false
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python scripts/fetch_nse.py
+      - name: Commit new files
+        run: |
+          git config user.name "market-tasks-bot"
+          git config user.email "market-tasks-bot@users.noreply.github.com"
+          git add -A data
+          git diff --cached --quiet || git commit -m "NSE daily files $(date -u +%F)"
+          git push

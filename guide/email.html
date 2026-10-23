@@ -1,0 +1,134 @@
+<!--
+MARKET DESK EMAIL SYSTEM. Read all of it, then build the email from these blocks. Style: Swiss, data-dense, dark slate.
+
+Hard rules (Gmail strips everything else):
+- Inline style attributes only. No <style>, <script>, <img>, SVG, classes, web-font imports or remote images.
+- One column, max-width 660px, tables for layout. Must read on a 375px phone with no sideways scroll.
+- Palette (copy exactly). Page #020617, card #0E1223, hairline #1E293B, rule #334155, text #E2E8F0, headings #F8FAFC,
+  muted #94A3B8, faint #64748B. Data colours only: up #22C55E, down #F87171, caution #F59E0B, info/link #38BDF8.
+- Colour never works alone: every coloured value also carries a sign, ▲/▼, or a word (BUY, EXIT, RISK-OFF).
+- Fonts. Text: 'Fira Sans','IBM Plex Sans',-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif.
+  Numbers, tickers, labels: 'Fira Code','IBM Plex Mono','SF Mono',Menlo,Consolas,'Roboto Mono',monospace.
+  Every number in a table is monospaced and right-aligned.
+- No pills, no tinted boxes, no rounded cards, no shadows, no gradients, no emoji. Structure comes from type size,
+  hairlines and whitespace. Section labels are small monospaced caps with a two-digit number.
+- Numbers: ₹ with Indian grouping (₹1,23,456), "cr" for crore, % to 1 decimal, dates as 23 Oct.
+- Charts: paste the blocks from charts.html (mscan.py) unchanged. Sparklines are the ▁▂▃▄▅▆▇█ strings mscan prints.
+- Whole HTML under 90 KB (Gmail clips longer mail). Short sentences, no filler, no disclaimers.
+- The plain-text `body` is sent too: bottom line, one line per call, then the machine blocks exactly as the prompt
+  specifies (LEDGER, CANDLES, RECORD, IDEAS LEDGER). The next run reads those from the plain text.
+
+Replace every {PLACEHOLDER}. Delete blocks you don't use.
+-->
+
+<!-- 1. FRAME -->
+<div style="margin:0;padding:20px 8px;background:#020617">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:660px;margin:0 auto;background:#0E1223;border:1px solid #1E293B;font-family:'Fira Sans','IBM Plex Sans',-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#E2E8F0;font-size:15px;line-height:1.55">
+
+<!-- 2. HEADER: meta line, headline = the single most important takeaway, 1-2 supporting sentences, status strip -->
+<tr><td style="padding:22px 22px 18px;border-bottom:1px solid #334155">
+  <div style="font-family:'Fira Code','IBM Plex Mono','SF Mono',Menlo,Consolas,monospace;font-size:11px;letter-spacing:1px;color:#94A3B8">MARKET DESK / {TASK e.g. EVENING SCAN} / {DAY DD MON YYYY} / {HH:MM} IST</div>
+  <div style="font-size:22px;line-height:1.3;font-weight:600;color:#F8FAFC;margin:10px 0 6px">{HEADLINE: one sentence, the call or the stance}</div>
+  <div style="font-size:15px;color:#CBD5E1">{1-2 sentences of support, action words in <b style="color:#F8FAFC">bold</b>}</div>
+  <!-- status strip: 2 to 4 cells -->
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:16px;border-top:1px solid #1E293B"><tr>
+    <td style="padding:10px 10px 0 0;width:33%">
+      <div style="font-family:'Fira Code',Menlo,Consolas,monospace;font-size:10px;letter-spacing:1px;color:#64748B">{LABEL e.g. MIDCAP}</div>
+      <div style="font-family:'Fira Code',Menlo,Consolas,monospace;font-size:13px;font-weight:600;color:#F87171">&#9632; {VALUE e.g. RISK-OFF}</div></td>
+    <td style="padding:10px 10px 0;width:33%;border-left:1px solid #1E293B">
+      <div style="font-family:'Fira Code',Menlo,Consolas,monospace;font-size:10px;letter-spacing:1px;color:#64748B">DATA</div>
+      <div style="font-family:'Fira Code',Menlo,Consolas,monospace;font-size:13px;color:#38BDF8">{GROWW LIVE or EOD2 + WEB}</div></td>
+  </tr></table>
+</td></tr>
+
+<tr><td style="padding:6px 22px 22px">
+
+<!-- 3. SECTION LABEL: before every section; number them 01, 02, ... -->
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:26px 0 10px"><tr>
+  <td style="font-family:'Fira Code',Menlo,Consolas,monospace;font-size:11px;letter-spacing:1.5px;color:#F8FAFC;padding-bottom:6px;border-bottom:1px solid #334155"><span style="color:#64748B">{01}</span>&nbsp;&nbsp;{SECTION NAME}</td>
+</tr></table>
+
+<!-- 4. KPI ROW: at most 3 cells per row (phones); for 4 KPIs use two rows of 2. Hairline separated. -->
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:4px 0"><tr>
+  <td style="padding:8px 10px 8px 0;width:33%;vertical-align:top">
+    <div style="font-family:'Fira Code',Menlo,Consolas,monospace;font-size:10px;letter-spacing:1px;color:#64748B">{LABEL e.g. INDIA VIX}</div>
+    <div style="font-family:'Fira Code',Menlo,Consolas,monospace;font-size:20px;color:#F8FAFC">{VALUE}</div>
+    <div style="font-family:'Fira Code',Menlo,Consolas,monospace;font-size:12px;color:#F87171">{▲ +7.0% or ▼ −1.2%, coloured by meaning}</div></td>
+  <!-- next cells add border-left:1px solid #1E293B;padding-left:10px -->
+</tr></table>
+
+<!-- 5. CALL: one per BUY call. Top rule and action word coloured: BUY #22C55E, WATCH #38BDF8, WAIT #F59E0B, EXIT/AVOID #F87171 -->
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-top:2px solid #22C55E;margin:14px 0 6px"><tr><td style="padding:10px 0 0">
+  <div><span style="font-family:'Fira Code',Menlo,Consolas,monospace;font-size:13px;font-weight:700;color:#22C55E">BUY</span>&nbsp;&nbsp;<span style="font-family:'Fira Code',Menlo,Consolas,monospace;font-size:18px;color:#F8FAFC">{SYMBOL}</span>&nbsp;&nbsp;<span style="font-size:13px;color:#94A3B8">{Company name} &middot; {sector}</span></div>
+  <div style="font-family:'Fira Code',Menlo,Consolas,monospace;font-size:11px;letter-spacing:1px;color:#94A3B8;margin-top:2px">{MIDCAP} &middot; {HIGH} CONVICTION &middot; CLOSE ₹{CLOSE}</div>
+  <div style="font-family:'Fira Code',Menlo,Consolas,monospace;font-size:13px;letter-spacing:-1px;color:#22C55E;margin:8px 0 4px">{SPARKLINE, 60 sessions}</div>
+  <!-- price ladder -->
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="font-family:'Fira Code',Menlo,Consolas,monospace;margin:6px 0 0;border-top:1px solid #1E293B;border-bottom:1px solid #1E293B"><tr>
+    <td style="padding:8px 6px 8px 0"><div style="font-size:10px;color:#64748B">ENTRY &gt;</div><div style="font-size:15px;color:#F8FAFC">{2,268}</div></td>
+    <td style="padding:8px 6px"><div style="font-size:10px;color:#64748B">STOP</div><div style="font-size:15px;color:#F87171">{2,140}</div><div style="font-size:11px;color:#F87171">{−5.6%}</div></td>
+    <td style="padding:8px 6px"><div style="font-size:10px;color:#64748B">T1</div><div style="font-size:15px;color:#22C55E">{2,520}</div><div style="font-size:11px;color:#22C55E">{2.0R}</div></td>
+    <td style="padding:8px 6px"><div style="font-size:10px;color:#64748B">T2</div><div style="font-size:15px;color:#22C55E">{2,650}</div></td>
+    <td style="padding:8px 0 8px 6px;text-align:right"><div style="font-size:10px;color:#64748B">SIZE</div><div style="font-size:15px;color:#F8FAFC">{13%}</div></td>
+  </tr></table>
+  <!-- risk:reward, widths = risk/(risk+reward to T1) and the rest -->
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:6px 0 10px"><tr>
+    <td style="width:{33}%;height:3px;background:#F87171;font-size:0;line-height:0">&nbsp;</td><td style="height:3px;background:#22C55E;font-size:0;line-height:0">&nbsp;</td></tr></table>
+  <!-- reasoning: label column + text column -->
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="font-size:14px">
+    <tr><td style="width:92px;padding:3px 10px 3px 0;vertical-align:top;font-family:'Fira Code',Menlo,Consolas,monospace;font-size:10px;letter-spacing:1px;color:#64748B">CHART</td><td style="padding:3px 0">{trend, base, pivot, volume, delivery, RS}</td></tr>
+    <tr><td style="padding:3px 10px 3px 0;vertical-align:top;font-family:'Fira Code',Menlo,Consolas,monospace;font-size:10px;letter-spacing:1px;color:#64748B">BUSINESS</td><td style="padding:3px 0">{growth quality, ROCE, debt, PEG, valuation vs own history}</td></tr>
+    <tr><td style="padding:3px 10px 3px 0;vertical-align:top;font-family:'Fira Code',Menlo,Consolas,monospace;font-size:10px;letter-spacing:1px;color:#64748B">RESULTS &amp; CALL</td><td style="padding:3px 0">{what the latest results, concall and filings said that matters}</td></tr>
+    <tr><td style="padding:3px 10px 3px 0;vertical-align:top;font-family:'Fira Code',Menlo,Consolas,monospace;font-size:10px;letter-spacing:1px;color:#F87171">RISKS</td><td style="padding:3px 0">{events and flags}</td></tr>
+  </table>
+</td></tr></table>
+
+<!-- 6. ACTION LIST: open calls, pre-market verdicts, holdings needing action. Action coloured by meaning. -->
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="font-size:14px">
+  <tr><td style="padding:8px 10px 8px 0;border-bottom:1px solid #1E293B;font-family:'Fira Code',Menlo,Consolas,monospace;color:#F8FAFC;white-space:nowrap;vertical-align:top">{SYMBOL}</td>
+      <td style="padding:8px 10px;border-bottom:1px solid #1E293B;font-family:'Fira Code',Menlo,Consolas,monospace;font-size:12px;font-weight:600;color:#22C55E;white-space:nowrap;vertical-align:top">&#9632; {HOLD}</td>
+      <td style="padding:8px 0;border-bottom:1px solid #1E293B">{reason; price vs entry in R}</td></tr>
+</table>
+
+<!-- 7. DATA TABLE: scoreboards, scorecards, watchlists. Numbers monospaced, right-aligned. -->
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="font-size:14px">
+  <tr style="font-family:'Fira Code',Menlo,Consolas,monospace;font-size:10px;letter-spacing:1px;color:#64748B">
+    <td style="padding:0 8px 6px 0;border-bottom:1px solid #334155">{NAME}</td><td style="padding:0 0 6px 8px;border-bottom:1px solid #334155;text-align:right">{VALUE}</td><td style="padding:0 0 6px 8px;border-bottom:1px solid #334155">{NOTE}</td></tr>
+  <tr><td style="padding:7px 8px 7px 0;border-bottom:1px solid #1E293B">{..}</td>
+      <td style="padding:7px 0 7px 8px;border-bottom:1px solid #1E293B;text-align:right;font-family:'Fira Code',Menlo,Consolas,monospace;color:#22C55E">{▲ +2.3%}</td>
+      <td style="padding:7px 0 7px 8px;border-bottom:1px solid #1E293B;color:#94A3B8">{..}</td></tr>
+</table>
+
+<!-- 8. NEWS / DOCUMENT ITEM: top items, filings, results and concall takeaways -->
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td style="padding:12px 0;border-bottom:1px solid #1E293B">
+  <div style="font-family:'Fira Code',Menlo,Consolas,monospace;font-size:10px;letter-spacing:1px;color:#94A3B8">{SYMBOLS or SECTOR} &middot; <span style="color:#F59E0B">{HIGH}</span> MATERIALITY &middot; {CONFIRMED or <span style="color:#F59E0B">UNCONFIRMED</span>}</div>
+  <div style="font-size:16px;font-weight:600;color:#F8FAFC;margin:3px 0">{headline in plain words}</div>
+  <div>{what happened, who is affected, direction, priced in or not}</div>
+  <div style="font-size:12px;margin-top:4px"><a href="{URL}" style="color:#38BDF8;text-decoration:none">{site or document, date} &#8599;</a></div>
+</td></tr></table>
+
+<!-- 9. NOTE LINES: alerts and cautions, no boxes. Label colour: red ALERT, amber CAUTION, blue NOTE -->
+<div style="margin:10px 0;font-size:14px"><span style="font-family:'Fira Code',Menlo,Consolas,monospace;font-size:11px;font-weight:600;color:#F87171">&#9632; ALERT</span>&nbsp;&nbsp;{one or two lines}</div>
+
+<!-- 10. DATA GAPS: always present, before sources -->
+<div style="margin:24px 0 6px;padding-top:10px;border-top:1px solid #334155;font-size:13px;color:#CBD5E1">
+  <div style="font-family:'Fira Code',Menlo,Consolas,monospace;font-size:11px;letter-spacing:1px;color:#F59E0B;margin-bottom:4px">&#9632; DATA GAPS</div>
+  {what failed &rarr; what replaced it, one per line with <br>}
+</div>
+
+<!-- 11. SOURCES -->
+<ol style="font-size:12px;color:#94A3B8;padding-left:18px;margin:8px 0">
+  <li style="margin:2px 0"><a href="{URL}" style="color:#38BDF8;text-decoration:none">{title}</a></li>
+</ol>
+
+<!-- 12. MACHINE BLOCK copy (LEDGER / RECORD / IDEAS LEDGER) for reading on screen; the plain-text body carries the one the next run parses -->
+<div style="font-family:'Fira Code',Menlo,Consolas,monospace;font-size:10px;letter-spacing:1px;color:#64748B;margin:22px 0 4px">LEDGER</div>
+<pre style="font-family:'Fira Code',Menlo,Consolas,monospace;font-size:11px;line-height:1.5;color:#94A3B8;background:#020617;border:1px solid #1E293B;padding:10px;white-space:pre-wrap;margin:0">{lines}</pre>
+
+</td></tr>
+
+<!-- 13. FOOTER -->
+<tr><td style="padding:12px 22px;border-top:1px solid #1E293B;font-family:'Fira Code',Menlo,Consolas,monospace;font-size:10px;letter-spacing:.5px;color:#64748B">
+  {SOURCES OF PRICES AND AS-OF TIMES, e.g. PRICES NSE VIA EOD2 + REPO FILES TO 26 OCT &middot; GROWW NOT CONNECTED} &middot; RESEARCH FOR UTSAV, NOT ORDERS
+</td></tr>
+</table>
+</div>
