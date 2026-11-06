@@ -1,6 +1,6 @@
 {
  "mode": "test",
- "at": "2026-11-06T16:03+05:30",
+ "at": "2026-11-06T16:05+05:30",
  "sign_in_probe": {
   "approval_checksum": {
    "http": 200,
@@ -12,14 +12,37 @@
     "tokenRefId"
    ],
    "active": true,
-   "token_ref_tail": "4fe027",
+   "token_ref_tail": "624a5c",
    "expiry": "2026-11-07T06:00:00",
    "sessionName": "Claude",
    "error": null,
    "data_call": {
     "http": 403,
     "reply": "{\"status\": \"FAILURE\", \"error\": {\"code\": \"403\", \"message\": \"Access forbidden for this request.\", \"metadata\": null}}"
-   }
+   },
+   "reach": {
+    "/user/detail": {
+     "http": 200,
+     "error": null
+    },
+    "/margins/detail/user": {
+     "http": 200,
+     "error": null
+    },
+    "/order/list": {
+     "http": 200,
+     "error": null
+    },
+    "/live-data/quote": {
+     "http": 403,
+     "error": "{\"code\": \"403\", \"message\": \"Access forbidden for this request.\", \"metadata\": null}"
+    },
+    "/historical/candles": {
+     "http": 403,
+     "error": "{\"code\": \"403\", \"message\": \"Access forbidden for this request.\", \"metadata\": null}"
+    }
+   },
+   "runner_ip_prefix": "20.115.x.x"
   }
  },
  "diagnostics": {
