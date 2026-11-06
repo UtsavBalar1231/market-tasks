@@ -89,7 +89,7 @@ def sign_in_probe():
             "x-client-platform": "growwapi-python-client", "x-client-platform-version": "1.5.0", "x-api-version": "1.0"}
     ts = str(int(time.time()))
     bodies = {"approval_checksum": {"key_type": "approval", "checksum": hashlib.sha256((raw + ts).encode()).hexdigest(), "timestamp": int(ts)},
-              "totp_from_raw_secret": {"key_type": "totp", "totp": pyotp.TOTP(base64.b32encode(raw.encode()).decode()).now()}}
+              }
     out = {}
     for name, body in bodies.items():
         try:
@@ -100,7 +100,7 @@ def sign_in_probe():
                 j = {}
             tok = j.get("token")
             res = {"http": r.status_code, "fields": sorted(j.keys()),
-                   "isActive": j.get("isActive"), "expiry": j.get("expiry"), "sessionName": j.get("sessionName"),
+                   "active": j.get("active"), "token_ref_tail": str(j.get("tokenRefId", ""))[-6:], "expiry": j.get("expiry"), "sessionName": j.get("sessionName"),
                    "error": clean(json.dumps(j.get("error")))[:200] if j.get("error") else None}
             if tok:
                 print(f"::add-mask::{tok}")
