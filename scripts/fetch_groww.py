@@ -27,16 +27,45 @@ def now():
     return dt.datetime.now(IST)
 
 
-def login():
+def key_info(key):
+    """Non-secret facts about the key and secret, to tell which kind of Groww key they are."""
+    import base64
+    info = {}
+    try:
+        p = key.split(".")[1]
+        claims = json.loads(base64.urlsafe_b64decode(p + "=" * (-len(p) % 4)))
+        sub = json.loads(claims.get("sub", "{}"))
+        info = {"key_role": sub.get("role"), "key_issued": dt.datetime.fromtimestamp(claims["iat"], IST).isoformat(timespec="minutes"),
+                "key_expires": dt.datetime.fromtimestamp(claims["exp"], IST).date().isoformat()}
+    except Exception as e:
+        info = {"key_parse": type(e).__name__}
+    s = os.environ.get("GROWW_TOTP_SECRET", "").strip()
+    info["secret_shape"] = {"length": len(s), "upper": any(c.isupper() for c in s), "lower": any(c.islower() for c in s),
+                            "digits_0189": any(c in "0189" for c in s), "symbols": any(not c.isalnum() for c in s)}
+    return info
+
+
+def login(report=None):
+    """Sign in with the TOTP flow; if the secret is not a TOTP secret, try Groww's key-and-secret flow."""
     import pyotp
     from growwapi import GrowwAPI
     key = os.environ.get("GROWW_API_KEY", "").strip()
-    seed = os.environ.get("GROWW_TOTP_SECRET", "").strip().replace(" ", "").upper()
-    if not key or not seed:
+    raw = os.environ.get("GROWW_TOTP_SECRET", "").strip()
+    seed = raw.replace(" ", "").upper()
+    if not key or not raw:
         raise RuntimeError("GROWW_API_KEY or GROWW_TOTP_SECRET is not set in the repo's Actions secrets")
-    if not re.fullmatch(r"[A-Z2-7]+=*", seed):
-        raise RuntimeError("GROWW_TOTP_SECRET is not a TOTP secret: it must contain only letters A-Z and digits 2-7")
-    token = GrowwAPI.get_access_token(api_key=key, totp=pyotp.TOTP(seed).now())
+    if report is not None:
+        report["diagnostics"] = key_info(key)
+    if re.fullmatch(r"[A-Z2-7]+=*", seed):
+        flow, token = "totp", GrowwAPI.get_access_token(api_key=key, totp=pyotp.TOTP(seed).now())
+    else:
+        flow = "key_and_secret"
+        try:
+            token = GrowwAPI.get_access_token(api_key=key, secret=raw)
+        except Exception as e:
+            raise RuntimeError(f"secret is not a TOTP secret (A-Z, 2-7 only); key-and-secret sign-in also failed: {clean(e)}")
+    if report is not None:
+        report["diagnostics"]["flow"] = flow
     print(f"::add-mask::{token}")
     SECRETS.append(token)
     return GrowwAPI(token)
@@ -54,7 +83,7 @@ def cmd_test():
     report = {"mode": "test", "at": now().isoformat(timespec="minutes")}
     g = None
     try:
-        g = login()
+        g = login(report)
         report["login"] = {"ok": True}
     except Exception as e:
         report["login"] = {"ok": False, "error": f"{type(e).__name__}: {clean(e)}"}
