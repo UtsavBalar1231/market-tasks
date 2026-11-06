@@ -3,7 +3,7 @@ name: Groww data
 on:
   push:
     branches: [main]
-    paths: ["scripts/fetch_groww.py", ".github/workflows/groww.yml"]
+    paths: ["scripts/fetch_groww.py", ".github/workflows/groww.yml", "requests/**"]
   workflow_dispatch:
 
 permissions:
