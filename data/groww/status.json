@@ -1,6 +1,6 @@
 {
  "mode": "test",
- "at": "2026-11-06T16:01+05:30",
+ "at": "2026-11-06T16:03+05:30",
  "sign_in_probe": {
   "approval_checksum": {
    "http": 200,
@@ -11,7 +11,8 @@
     "token",
     "tokenRefId"
    ],
-   "isActive": null,
+   "active": true,
+   "token_ref_tail": "4fe027",
    "expiry": "2026-11-07T06:00:00",
    "sessionName": "Claude",
    "error": null,
@@ -19,18 +20,6 @@
     "http": 403,
     "reply": "{\"status\": \"FAILURE\", \"error\": {\"code\": \"403\", \"message\": \"Access forbidden for this request.\", \"metadata\": null}}"
    }
-  },
-  "totp_from_raw_secret": {
-   "http": 400,
-   "fields": [
-    "error",
-    "header",
-    "response"
-   ],
-   "isActive": null,
-   "expiry": null,
-   "sessionName": null,
-   "error": "{\"errorCode\": \"400\", \"errorMessage\": \"Invalid type provided\"}"
   }
  },
  "diagnostics": {
