@@ -22,7 +22,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: pip install -q growwapi pyotp
+      - run: pip install -q growwapi pyotp requests
       - name: Fetch from Groww
         env:
           GROWW_API_KEY: ${{ secrets.GROWW_API_KEY }}

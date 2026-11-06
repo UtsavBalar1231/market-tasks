@@ -75,12 +75,57 @@ def step(report, name, fn):
     try:
         report[name] = {"ok": True, **(fn() or {})}
     except Exception as e:
-        report[name] = {"ok": False, "error": f"{type(e).__name__}: {clean(e)}"}
+        report[name] = {"ok": False, "error": f"{type(e).__name__} {getattr(e, 'code', '')}: {clean(e)}"}
     print(name, "ok" if report[name]["ok"] else "FAILED")
+
+
+def sign_in_probe():
+    """Try each way of getting a session and record Groww's reply (never the token) plus one data call with it."""
+    import base64, hashlib, requests, pyotp
+    key = os.environ.get("GROWW_API_KEY", "").strip()
+    raw = os.environ.get("GROWW_TOTP_SECRET", "").strip()
+    url = "https://api.groww.in/v1/token/api/access"
+    head = {"Authorization": "Bearer " + key, "Content-Type": "application/json", "x-client-id": "growwapi",
+            "x-client-platform": "growwapi-python-client", "x-client-platform-version": "1.5.0", "x-api-version": "1.0"}
+    ts = str(int(time.time()))
+    bodies = {"approval_checksum": {"key_type": "approval", "checksum": hashlib.sha256((raw + ts).encode()).hexdigest(), "timestamp": int(ts)},
+              "totp_from_raw_secret": {"key_type": "totp", "totp": pyotp.TOTP(base64.b32encode(raw.encode()).decode()).now()}}
+    out = {}
+    for name, body in bodies.items():
+        try:
+            r = requests.post(url, headers=head, json=body, timeout=20)
+            try:
+                j = r.json()
+            except Exception:
+                j = {}
+            tok = j.get("token")
+            res = {"http": r.status_code, "fields": sorted(j.keys()),
+                   "isActive": j.get("isActive"), "expiry": j.get("expiry"), "sessionName": j.get("sessionName"),
+                   "error": clean(json.dumps(j.get("error")))[:200] if j.get("error") else None}
+            if tok:
+                print(f"::add-mask::{tok}")
+                SECRETS.append(tok)
+                d = requests.get("https://api.groww.in/v1/live-data/ltp", timeout=20,
+                                 params={"segment": "CASH", "exchange_symbols": "NSE_NIFTY"},
+                                 headers={**head, "Authorization": "Bearer " + tok})
+                try:
+                    dj = d.json()
+                except Exception:
+                    dj = {"body": d.text[:200]}
+                res["data_call"] = {"http": d.status_code, "reply": clean(json.dumps(dj))[:300]}
+            out[name] = res
+        except Exception as e:
+            out[name] = {"error": f"{type(e).__name__}: {clean(e)}"}
+        time.sleep(1)
+    return out
 
 
 def cmd_test():
     report = {"mode": "test", "at": now().isoformat(timespec="minutes")}
+    try:
+        report["sign_in_probe"] = sign_in_probe()
+    except Exception as e:
+        report["sign_in_probe"] = {"error": f"{type(e).__name__}: {clean(e)}"}
     g = None
     try:
         g = login(report)
