@@ -113,6 +113,24 @@ def sign_in_probe():
                 except Exception:
                     dj = {"body": d.text[:200]}
                 res["data_call"] = {"http": d.status_code, "reply": clean(json.dumps(dj))[:300]}
+                # Which parts of the API this session can reach: status codes only, never account contents.
+                reach = {}
+                for path, params in [("/user/detail", None), ("/margins/detail/user", None), ("/order/list", {"page": 0, "page_size": 1}),
+                                     ("/live-data/quote", {"exchange": "NSE", "segment": "CASH", "trading_symbol": "NIFTY"}),
+                                     ("/historical/candles", {"exchange": "NSE", "segment": "CASH", "groww_symbol": "NSE-KEC",
+                                                              "start_time": "2026-11-02 09:15:00", "end_time": "2026-11-05 15:30:00",
+                                                              "candle_interval": "1day"})]:
+                    x = requests.get("https://api.groww.in/v1" + path, params=params, timeout=20,
+                                     headers={**head, "Authorization": "Bearer " + tok})
+                    try:
+                        err = (x.json() or {}).get("error")
+                    except Exception:
+                        err = x.text[:120]
+                    reach[path] = {"http": x.status_code, "error": clean(json.dumps(err))[:160] if x.status_code != 200 else None}
+                    time.sleep(0.5)
+                res["reach"] = reach
+                ip = requests.get("https://api.ipify.org?format=json", timeout=10).json().get("ip", "")
+                res["runner_ip_prefix"] = ".".join(ip.split(".")[:2]) + ".x.x"
             out[name] = res
         except Exception as e:
             out[name] = {"error": f"{type(e).__name__}: {clean(e)}"}
