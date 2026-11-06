@@ -1,8 +1,92 @@
 {
  "mode": "test",
- "at": "2026-11-06T15:10+05:30",
+ "at": "2026-11-06T15:12+05:30",
+ "diagnostics": {
+  "key_role": "auth-totp",
+  "key_issued": "2026-11-06T15:07+05:30",
+  "key_expires": "2051-10-31",
+  "secret_shape": {
+   "length": 32,
+   "upper": true,
+   "lower": true,
+   "digits_0189": false,
+   "symbols": true
+  },
+  "flow": "key_and_secret"
+ },
  "login": {
+  "ok": true
+ },
+ "instruments": {
+  "ok": true,
+  "columns": [
+   "exchange",
+   "exchange_token",
+   "trading_symbol",
+   "groww_symbol",
+   "name",
+   "instrument_type",
+   "segment",
+   "series",
+   "isin",
+   "underlying_symbol",
+   "underlying_exchange_token",
+   "expiry_date",
+   "strike_price",
+   "lot_size",
+   "tick_size",
+   "freeze_quantity",
+   "is_reserved",
+   "buy_allowed",
+   "sell_allowed",
+   "internal_trading_symbol",
+   "is_intraday"
+  ],
+  "rows": 147671,
+  "cash_types": {
+   "EQ": 12814,
+   "IDX": 31
+  },
+  "fno_types": {
+   "PE": 43827,
+   "CE": 43813,
+   "FUT": 685
+  },
+  "index_rows": 24,
+  "universe_found": 400,
+  "universe_missing": [],
+  "universe_fno": 121
+ },
+ "quote_index": {
   "ok": false,
-  "error": "RuntimeError: GROWW_TOTP_SECRET is not a TOTP secret: it must contain only letters A-Z and digits 2-7"
+  "error": "GrowwAPIException: Access forbidden for this request."
+ },
+ "quote_stock": {
+  "ok": false,
+  "error": "GrowwAPIException: Access forbidden for this request."
+ },
+ "ltp": {
+  "ok": false,
+  "error": "GrowwAPIException: Access forbidden for this request."
+ },
+ "ohlc": {
+  "ok": false,
+  "error": "GrowwAPIException: Access forbidden for this request."
+ },
+ "candles_day": {
+  "ok": false,
+  "error": "GrowwAPIException: Access forbidden for this request."
+ },
+ "candles_15m": {
+  "ok": false,
+  "error": "GrowwAPIException: Access forbidden for this request."
+ },
+ "option_chain_nifty": {
+  "ok": false,
+  "error": "GrowwAPIException: Access forbidden for this request."
+ },
+ "option_chain_stock": {
+  "ok": false,
+  "error": "GrowwAPIException: Access forbidden for this request."
  }
 }
